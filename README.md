@@ -6,13 +6,16 @@ within a defined tissue or tumour region, the area occupied by a selected
 cellular compartment and the mean DAB signal in that compartment.
 
 <div align="center">
-
-<img src="docs/figures/workflow_overview.png" 
+<table>
+<tr>
+<td>
+<img src="docs/figures/workflow_overview.png"
      alt="General MEL quantification workflow"
      width="850">
-
+</td>
+</tr>
+</table>
 <p><em>Figure 1. General workflow for automated MEL quantification in IHC images.</em></p>
-
 </div>
 
 ## Purpose and measurement definition
