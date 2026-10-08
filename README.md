@@ -11,9 +11,6 @@ The analysis can be performed for:
 - **cytoplasm**; or
 - **membrane**.
 
-The overall workflow is illustrated in
-[the workflow overview](docs/figures/workflow_overview.png).
-
 ![General MEL quantification workflow](docs/figures/workflow_overview.png)
 
 This repository contains the ImageJ macro implementation of the method.
@@ -277,23 +274,3 @@ Before processing a cohort:
 This validation is necessary to detect empty ROIs, incorrect mask labels,
 inappropriate thresholds, and images incompatible with the colour
 deconvolution vector.
-
-## Reproducibility checklist
-
-Store the following with the results:
-
-- original RGB images;
-- external label masks, if used;
-- `run_gui.ijm` and the compartment macros;
-- Fiji/ImageJ and MorphoLibJ versions;
-- pixel scale and mask-label convention;
-- all parameter values;
-- `QuantificationResults.xls`; and
-- the generated quality-control overlays.
-
-## Citation
-
-When this repository is used, cite the associated article and specify the
-repository version or commit used for the analysis. The article should
-also report the image calibration, input-mask convention, parameters, and
-quality-control procedure.
