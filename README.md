@@ -17,7 +17,7 @@ Within a user-defined tissue or tumour region, the workflow measures:
         <div style="background-color: #eaeef2; border-left: 4px solid #9bb8d8; color: #afc6e0; margin-top: 12px; padding: 9px 14px; text-align: left;">
           <strong>Workflow overview.</strong>
           From the original RGB IHC image to region definition, colour
-          deconvolution, compartment segmentation, and MEL quantification.
+          deconvolution, compartment segmentation and MEL quantification.
         </div>
       </td>
     </tr>
