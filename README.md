@@ -135,10 +135,6 @@ the selected region. Watershed boundaries are eroded and filtered by
 minimum object size before membrane area and mean DAB intensity are
 measured.
 
-The `blue` and `brown` deconvolved channels, nuclei masks, cytoplasm ROIs,
-watershed seeds, and membrane masks are intermediate images created during
-processing. They are not additional input files.
-
 ## Input data
 
 ### Original IHC image
@@ -161,8 +157,7 @@ control overlay as the original image.
 
 An external mask is required only for **ROI from mask**. It must be a label
 image in which pixel values represent regions such as background,
-non-tumour tissue, and tumour. It is not a screenshot, an RGB copy of the
-original image, or a mask of the nuclei.
+non-tumour tissue and tumour.
 
 For batch mask analysis, image and mask files must have exactly the same
 filename and extension and must be stored in separate parallel folders:
@@ -176,18 +171,6 @@ masks/
 |-- case_001.tif
 `-- case_002.tif
 ```
-
-For `case_001.tif`, the macros open the image from `images/` and the mask
-from `masks/`. A different basename, extension, or folder layout will
-cause the mask lookup to fail or select the wrong file. The single-image
-macros ask for the original image first and the corresponding segmentation
-image second.
-
-The mask macros convert the label image to 8-bit and subtract 1 before
-selecting `Tumor label`. With the default `Tumor label = 1`, tumour pixels
-encoded as value 2 in the file are selected after this adjustment. This
-is an implementation detail: inspect numeric pixel values in Fiji rather
-than inferring labels from display colours.
 
 ## Parameters
 
