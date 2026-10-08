@@ -65,28 +65,28 @@ For each RGB IHC image, the workflow:
 3. segments the selected cellular compartment; and
 4. measures compartment area and mean DAB intensity.
 
-The method supports three compartments:
-
-- **Nuclei:** haematoxylin-positive objects.
-- **Cytoplasm:** the selected tissue/tumour region after removal of
-  detected and dilated nuclei.
-- **Membrane:** objects obtained with a marker-controlled watershed
-  driven by haematoxylin and strongly DAB-positive seeds.
+The method supports three compartments: nuclei, cytoplasm and membrane.
 
 ## Measurement definition
 
 For mask-based analyses, the area calculations are:
 
-```text
-compartment area (um^2) = compartment area (pixels) * r^2
-compartment area (%)    = 100 * compartment area (um^2)
-                           / analysed-region area (um^2)
-```
+<div align="center">
+  <p>
+    <code>compartment area (μm<sup>2</sup>)</code>
+    =
+    <code>compartment area (pixels) × r<sup>2</sup></code>
+  </p>
+  <p>
+    <code>compartment area (%)</code>
+    =
+    <code>100 × compartment area (μm<sup>2</sup>)</code>
+    /
+    <code>analysed-region area (μm<sup>2</sup>)</code>
+  </p>
+</div>
 
-`r` is the image scale in micrometres per pixel. The mean DAB value is
-measured after the macro inverts the deconvolved DAB channel. It is
-therefore the mean intensity of the inverted DAB image used by the macro,
-not a separately calibrated optical-density measurement.
+`r` is the image scale in micrometres per pixel. 
 
 ## Analysis modes
 
@@ -197,7 +197,7 @@ constants.
 
 | Parameter | Used by | Function | Default |
 |---|---|---|---:|
-| `Ratio micra/pixel` (`r`) | All variants | Converts pixel areas to um^2 | 0.502 |
+| `Ratio micra/pixel` (`r`) | All variants | Converts pixel areas to um^2 | 0.5 |
 | `Tumor label` (`labT`) | Mask variants | Label selected as tumour after the internal subtraction | 1 |
 | `Nuclei threshold` (`thBlue`) | Nuclei, cytoplasm | Upper threshold on the deconvolved haematoxylin channel | 190 nuclei; 100 cytoplasm |
 | `Nuclei threshold` (`thBlue`) | Membrane | Upper threshold used for haematoxylin seed generation | 140 |
