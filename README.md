@@ -5,19 +5,15 @@ haematoxylin-DAB immunohistochemistry (IHC) images. The method estimates,
 within a defined tissue or tumour region, the area occupied by a selected
 cellular compartment and the mean DAB signal in that compartment.
 
-The analysis can be performed for:
+<div align="center">
 
-- **nuclei**;
-- **cytoplasm**; or
-- **membrane**.
+<img src="docs/figures/workflow_overview.png" 
+     alt="General MEL quantification workflow"
+     width="850">
 
-![General MEL quantification workflow](docs/figures/workflow_overview.png)
+<p><em>Figure 1. General workflow for automated MEL quantification in IHC images.</em></p>
 
-This repository contains the ImageJ macro implementation of the method.
-It is intended to make the image-processing procedure and the analysis
-parameters available for inspection and reproducibility. Thresholds and
-size criteria are image- and staining-dependent and should be validated
-against representative images before analysing a new cohort.
+</div>
 
 ## Purpose and measurement definition
 
@@ -135,15 +131,6 @@ mask from `masks/`. The mask must therefore be present under exactly the
 same filename. The single-image macros ask for the original image first
 and the corresponding segmentation image second.
 
-The mask-based macros convert the label image to 8-bit and subtract 1
-before selecting `Tumor label`. With the default `Tumor label = 1`, a
-tumour encoded as value 2 in the file is selected after this adjustment.
-This is an implementation detail that must be considered when preparing
-masks; the displayed colour of a label is not sufficient to determine its
-numeric value. If a different label convention is used, inspect the pixel
-values in Fiji and set `Tumor label` to the value present after the
-internal subtraction.
-
 ## Parameters
 
 The following are the parameters exposed by the current macros. The
@@ -165,10 +152,6 @@ Some cytoplasm scripts also contain additional thresholds for channel-based
 classification. These values are defined in the relevant script and
 should be reported with the analysis if they are changed from their
 validated settings.
-
-For a publication-quality analysis, report the Fiji/ImageJ version, the
-macro version or repository commit, image scale, mask-label convention,
-all parameter values, and the image-selection criteria.
 
 ## Outputs
 
@@ -207,34 +190,13 @@ Membrane_segmentations/
 ```
 
 The JPEG files are quality-control overlays in which the detected
-compartment is drawn in red on the original image. They are output
-figures, not input label masks.
+compartment is drawn in red on the original image. 
 
-### Important status of the other variants
+## Requirements
 
-The current single-image, whole-tissue, and manual-ROI variants display
-the measurements in Fiji's Results table and show the red overlay, but
-their export blocks are commented out in the current scripts. Some of
-the batch whole-tissue variants also contain legacy or incomplete export
-sections. Consequently, these variants should be treated as interactive
-validation workflows unless their export code is completed and tested.
-Save the Results table manually when using them.
+- Make sure MorphoLibJ is installed in your ImageJ/Fiji instance (you can install it from the ImageJ update site or by copying the MorphoLibJ jar into plugins/)
 
-The repository should not be described as providing a fully automated,
-file-based export for every launcher option until those variants have
-been repaired and validated.
-
-## Installation and use
-
-### Requirements
-
-- Fiji with a current ImageJ 1.x installation;
-- the Fiji **Colour Deconvolution** command; and
-- **Marker-controlled Watershed** for membrane analysis. If this command
-  is unavailable, enable the MorphoLibJ update site using
-  `Help > Update... > Manage update sites`, install it, and restart Fiji.
-
-### Installation
+## Installation
 
 1. Download or clone this repository:
 
@@ -258,19 +220,3 @@ If Fiji reports that a macro cannot be found, place the three compartment
 directories directly inside `Fiji.app/macros/`, restart Fiji, and run the
 launcher again. The launcher uses ImageJ macro command names to call the
 compartment scripts.
-
-### Recommended validation run
-
-Before processing a cohort:
-
-1. choose **Single image**;
-2. choose **Manual ROI** or **ROI from mask**;
-3. analyse one representative RGB IHC image;
-4. inspect the red overlay and the Results table;
-5. repeat for nuclei, cytoplasm, and membrane if all three compartments
-   are part of the study; and
-6. record the final parameters before starting batch processing.
-
-This validation is necessary to detect empty ROIs, incorrect mask labels,
-inappropriate thresholds, and images incompatible with the colour
-deconvolution vector.
