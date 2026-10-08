@@ -207,16 +207,6 @@ constants.
 | `GLUT threshold` (`thBrown`) | Membrane | Threshold for strongly DAB-positive seed regions | 130 |
 | `Min membrane size` (`minMembSize`) | Membrane | Minimum accepted membrane particle area in pixels | 50 |
 
-Some cytoplasm scripts contain additional legacy thresholds for channel
-classification. If those values are changed, report the exact values and
-the script variant used. The current batch cytoplasm output also contains
-legacy classification fields in some variants; they should not be
-interpreted unless their implementation has been validated.
-
-For a publication-quality analysis, report the Fiji/ImageJ version,
-MorphoLibJ version, repository commit, image scale, mask-label convention,
-all parameter values, and image-selection criteria.
-
 ## Outputs
 
 The three mask-based batch macros have an active file-based export:
