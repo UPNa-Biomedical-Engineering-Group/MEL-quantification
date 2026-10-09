@@ -100,7 +100,7 @@ The launcher presents three choices:
 The `run_GUI` launcher presents these choices through a sequence of dialogs:
 
 <div align="center">
-  <img src="docs/figures/GUI_choices.png" alt="run_GUI dialogs for selecting analysis mode, region and cell compartment" width="500" style="display: block; max-width: 100%; height: auto;">
+  <img src="docs/figures/GUI_choices.png" alt="run_GUI dialogs for selecting analysis mode, region and cell compartment" width="600" style="display: block; max-width: 100%; height: auto;">
   <p><em>Example of the run_GUI selection windows for analysis mode, region and cell compartment.</em></p>
 </div>
 
