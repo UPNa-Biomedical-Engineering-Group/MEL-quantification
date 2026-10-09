@@ -9,12 +9,11 @@ Within a user-defined tissue or region of interest, the workflow measures:
 - the mean signal in the deconvolved DAB channel within that cellular compartment.
 
 <div align="center">
-  <table>
+  <table width="850" style="border-collapse: collapse; width: 850px;">
     <tr>
-      <td align="center" bgcolor="#f6f8fa" style="border: 1px solid #d0d7de; border-radius: 8px; padding: 14px;">
-        <img src="docs/figures/workflow_overview.png" alt="General workflow for MEL quantification" width="850">
-        <br>
-        <div style="background-color: #eaeef2; border-left: 4px solid #9bb8d8; color: #afc6e0; margin-top: 12px; padding: 9px 14px; text-align: left;">
+      <td align="center" bgcolor="#f6f8fa" style="border: 1px solid #d0d7de; padding: 0; line-height: 0;">
+        <img src="docs/figures/workflow_overview.png" alt="General workflow for MEL quantification" width="850" style="display: block; width: 850px; max-width: 100%; height: auto;">
+        <div bgcolor="#eaeef2" style="background-color: #eaeef2; border-top: 1px solid #d0d7de; border-left: 4px solid #9bb8d8; color: #24292f; line-height: 1.5; margin: 0; padding: 9px 14px; text-align: left;">
           <strong>Workflow overview.</strong>
           From the original RGB IHC image to region definition, colour
           deconvolution, compartment segmentation and MEL quantification.
@@ -172,6 +171,60 @@ masks/
 |-- case_001.tif
 `-- case_002.tif
 ```
+
+## Use case: generating ROIs with Trainable Superpixel Segmentation
+
+A typical workflow is to use [Trainable Superpixel Segmentation
+(TSS)](https://github.com/CVPD/Trainable_Superpixel_Segmentation) in Fiji to
+create the ROI mask, and then use MEL Quantification to measure marker
+expression within that ROI. In the workflow described in the accompanying
+article, TSS is used to segment tissue regions such as background, tumour,
+stroma and immune infiltrate. The same approach can be used to define any
+other region of interest.
+
+### 1. Generate a superpixel label image
+
+Install TSS from its
+[release page](https://github.com/CVPD/Trainable_Superpixel_Segmentation/releases)
+and make sure that MorphoLibJ is available in Fiji. TSS expects:
+
+1. the image to segment; and
+2. a corresponding label image containing the generated superpixels.
+
+The label image can be generated with a superpixel method such as SLIC. Open
+both images in Fiji and run
+`Plugins > Segmentation > Trainable Superpixel Segmentation`. Select
+representative superpixels for each class, train the classifier, and apply it
+to the image. For a tumour-oriented analysis, useful classes may include
+background, tumour, stroma and immune infiltrate.
+
+Save the resulting classification as a label image with the same dimensions
+as the original image. Select the label corresponding to the ROI that should
+be quantified. For example, selecting the tumour class produces the tumour
+ROI, but the selected class can represent any region of interest.
+
+### 2. Quantify the ROI with MEL Quantification
+
+Use the original RGB IHC image as the input for MEL Quantification, not the
+preprocessed image or the superpixel label image. The preprocessing used to
+help TSS segment tissue is only for defining the ROI; it must not replace the
+original image used for DAB measurement.
+
+For one image:
+
+1. Launch `run_GUI` from the Fiji `Plugins` menu.
+2. Select **Single image** and **ROI from mask**.
+3. Select the original RGB image and the corresponding TSS label image.
+4. Enter the label value assigned to the ROI and choose nuclei, cytoplasm or
+   membrane.
+
+For a batch, place the original images and TSS label images in separate
+folders. Give each image and its label image exactly the same filename and
+extension, then choose **Batch mode** and **ROI from mask** in `run_GUI`.
+
+MEL Quantification then measures the selected cellular compartment and the
+mean deconvolved DAB signal within the selected ROI. The ROI does not have to
+be tumour tissue; tumour segmentation is simply a common use case.
 
 ## Parameters
 
