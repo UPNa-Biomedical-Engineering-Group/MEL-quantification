@@ -7,7 +7,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Title
-Dialog.create("Adenocarcinoma Plugin");
+Dialog.create("MEL quantification");
 
 mode1 = newArray("Single image mode", "Batch mode");
 Dialog.addRadioButtonGroup("Analysis mode:", mode1, 2, 2, mode1[0]);

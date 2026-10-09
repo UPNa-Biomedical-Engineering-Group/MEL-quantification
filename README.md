@@ -97,6 +97,13 @@ The launcher presents three choices:
 | Region to analyse | Whole tissue; ROI from mask; Manual ROI | Define the region used for cell segmentation and marker intensity measurement |
 | Cell compartment | Nuclei; Cytoplasm; Membrane | Select the cell compartment to quantify |
 
+The `run_GUI` launcher presents these choices through a sequence of dialogs:
+
+<div align="center">
+  <img src="docs/figures/GUI_choices.png" alt="run_GUI dialogs for selecting analysis mode, region and cell compartment" width="1000" style="display: block; max-width: 100%; height: auto;">
+  <p><em>Example of the run_GUI selection windows for analysis mode, region and cell compartment.</em></p>
+</div>
+
 Manual ROI is available only in single-image mode. The macro selected by
 the launcher is determined by these choices:
 
