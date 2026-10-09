@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-var r=0.502, labT=1, thBlue=190, minCellSize=30, maxCellSize=15000;
+var r=0.502, roiLabel=1, thBlue=190, minCellSize=30, maxCellSize=15000;
 
 macro "BRCA Action Tool 1 - Ca3fT0b09BT5b09RTab09CTfb09A"{
 
@@ -19,14 +19,14 @@ macro "BRCA Action Tool 1 - Ca3fT0b09BT5b09RTab09CTfb09A"{
     
     Dialog.create("Parameters for the analysis");
 	Dialog.addNumber("Ratio micra/pixel", r);
-	Dialog.addNumber("Tumor label", labT);     
+	Dialog.addNumber("ROI label", roiLabel);
 	Dialog.addNumber("Nuclei threshold", thBlue);
 	Dialog.addNumber("Min nuclei size", minCellSize);
 	Dialog.addNumber("Max nuclei size", maxCellSize);
 	Dialog.show();
 	
 	r= Dialog.getNumber();
-	labT= Dialog.getNumber();
+	roiLabel= Dialog.getNumber();
 	thBlue= Dialog.getNumber();
 	minCellSize= Dialog.getNumber();
 	maxCellSize= Dialog.getNumber();
@@ -89,20 +89,20 @@ run("8-bit");
 run("Conversions...", "scale");
 run("Subtract...", "value=1");
 
-// Create tumour area:
+// Create ROI area:
 selectWindow("label");
-run("Select Label(s)", "label(s)="+labT);
-setThreshold(labT, 255);
+run("Select Label(s)", "label(s)="+roiLabel);
+setThreshold(roiLabel, 255);
 run("Convert to Mask");
 setThreshold(129, 255);
 run("Convert to Mask");
 run("Create Selection");
-roiManager("Add");	// ROI==0 --> Tumour area
+roiManager("Add");	// ROI==0 --> ROI area
 close();
 selectWindow("label");
 close();
 
-// MEASURE AREA OF TUMOUR--
+// MEASURE AREA OF ROI--
 run("Set Measurements...", "area redirect=None decimal=2");
 selectWindow(MyTitle);
 run("Select All");
@@ -147,7 +147,7 @@ run("Select All");
 //run("Analyze Particles...", "size=10-15000 pixel show=Masks in_situ");
 run("Analyze Particles...", "size="+minCellSize+"-"+maxCellSize+" pixel show=Masks in_situ");
 run("Create Selection");
-run("Add to Manager");	// ROI1 --> Cell nuclei in tumor area 
+run("Add to Manager");	// ROI1 --> Cell nuclei in ROI area
 close();
 
 
@@ -182,8 +182,8 @@ if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
 }
 i=nResults;
 setResult("Label", i, MyTitle); 	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Nuclei area in tumour (%)",i,r1);
+setResult("ROI area (um2)",i,Atm);
+setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
 saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
 

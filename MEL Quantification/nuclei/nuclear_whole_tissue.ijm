@@ -134,8 +134,8 @@ close();
 
 i=nResults;
 setResult("Label", i, MyTitle); 	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Nuclei area in tumour (%)",i,r1);
+setResult("ROI area (um2)",i,Atm);
+setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
 saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
 

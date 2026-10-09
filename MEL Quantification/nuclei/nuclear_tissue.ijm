@@ -163,10 +163,10 @@ if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
 }
 i=nResults;
 setResult("Label", i, MyTitle); 	
-setResult("Non-tumour area (um2)",i,Antm);	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Tumour area in tissue (%)",i,rTum);	
-setResult("Nuclei area in tumour (%)",i,r1);
+setResult("Non-ROI area (um2)",i,Antm);
+setResult("ROI area (um2)",i,Atm);
+setResult("ROI area in tissue (%)",i,rROI);
+setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);
 setResult("0 %",i,B0);
 setResult("1+ %",i,B1);

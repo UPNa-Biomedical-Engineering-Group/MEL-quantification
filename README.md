@@ -34,7 +34,7 @@ MEL_quantification/
 |   `-- figures/
 |       `-- workflow_overview.png
 `-- MEL Quantification/
-    |-- MEL Quantification.ijm
+    |-- run_GUI.ijm
     |-- nuclei/
     |   |-- nuclear.ijm
     |   |-- nuclear_single.ijm
@@ -105,9 +105,9 @@ the launcher is determined by these choices:
 |---|---|---|---|
 | `_whole_tissue` | One original image | Automatic tissue threshold | Single image |
 | `_tissue` | Folder of original images | Automatic tissue threshold | Batch |
-| `_single` | One original image and one label mask | External tumour mask | Single image |
+| `_single` | One original image and one label mask | External ROI mask | Single image |
 | `_ROI` | One original image | Freehand ROI drawn by the user | Single image |
-| No suffix | Folder of images and folder of label masks | External tumour mask | Batch |
+| No suffix | Folder of images and folder of label masks | External ROI mask | Batch |
 
 ## Algorithm
 
@@ -122,7 +122,7 @@ area and DAB intensity.
 ### Cytoplasm
 
 The macro detects nuclei using the nuclear workflow and dilates the
-nuclear ROI. Boolean operations between the selected tissue/tumour region
+nuclear ROI. Boolean operations between the selected tissue/ROI region
 and the dilated nuclei produce the cytoplasmic ROI. Cytoplasm area and
 mean DAB intensity are then measured in that ROI.
 
@@ -153,11 +153,12 @@ Required conditions:
 Do not use a deconvolved channel, a binary nuclei mask, or a JPEG quality
 control overlay as the original image.
 
-### External label mask
+### External label map
 
 An external mask is required only for **ROI from mask** mode. It must be a label
-image in which pixel values represent regions such as background,
-stromal tissue and tumour.
+image in which pixel values represent regions such as background and the
+region of interest. This can be any ROI selected for analysis; a typical use
+case is a segmented tumour region.
 
 For batch mask analysis, image and mask files must have exactly the same
 filename and extension and must be stored in separate parallel folders:
@@ -181,7 +182,7 @@ constants.
 | Parameter | Used by | Function | Default |
 |---|---|---|---:|
 | `Ratio micra/pixel` (`r`) | All variants | Converts pixel areas to um^2 | 0.5 |
-| `Tumor label` (`labT`) | Mask variants | Label selected as tumour after the internal subtraction | 1 |
+| `ROI label` (`roiLabel`) | Mask variants | Label selected as the region of interest after the internal subtraction | 1 |
 | `Nuclei threshold` (`thBlue`) | Nuclei, cytoplasm | Upper threshold on the deconvolved haematoxylin channel | 190 nuclei; 100 cytoplasm |
 | `Nuclei threshold` (`thBlue`) | Membrane | Upper threshold used for haematoxylin seed generation | 140 |
 | `Min nuclei size` (`minCellSize`) | Nuclei, cytoplasm | Minimum accepted nuclear particle area in pixels | 30 |
@@ -203,9 +204,9 @@ They append one row per analysed image to
 contains:
 
 - `Label`: original image filename;
-- `Tumour area (um2)`: area of the selected tumour region;
-- `Nuclei area in tumour (%)`, `Cytoplasm area in tumour (%)`, or
-  `Membrane area in tumour (%)`;
+- `ROI area (um2)`: area of the selected region of interest;
+- `Nuclei area in ROI (%)`, `Cytoplasm area in ROI (%)`, or
+  `Membrane area in ROI (%)`;
 - `Iavg nuclei`, `Iavg cytoplasm`, or `Iavg membrane`; and
 - additional classification fields in variants that implement them.
 
@@ -259,15 +260,15 @@ The resulting installation must have this layout:
 
 ```text
 Fiji.app/plugins/MEL Quantification/
-|-- MEL Quantification.ijm
+|-- run_GUI.ijm
 |-- nuclei/
 |-- cytoplasm/
 `-- membrane/
 ```
 
 <<<<<<< HEAD
-Restart Fiji. The launcher appears in the `Plugins` menu as
-**MEL Quantification**. Select it to open the analysis interface.
+Restart Fiji. The launcher appears in the `Plugins` menu as **run_GUI**.
+Select it to open the MEL quantification analysis interface.
 =======
 Then restart ImageJ. The plugin appears under the Plugins menu (MEL_quantification).
 >>>>>>> e133354604642cc1e77d642daf04a9e2a67d5cdc

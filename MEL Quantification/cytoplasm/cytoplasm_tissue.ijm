@@ -126,7 +126,7 @@ run("Add to Manager");	// ROI1 --> Cell nuclei in the whole tissue
 close();
 
 
-// OBTAIN CYTOPLASM AREA IN TUMOUR REGION
+// OBTAIN CYTOPLASM AREA IN ROI REGION
 
 roiManager("deselect");
 roiManager("Select", newArray(0,1));
@@ -182,10 +182,10 @@ if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
 }
 i=nResults;
 setResult("Label", i, MyTitle); 	
-setResult("Non-tumour area (um2)",i,Antm);	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Tumour area in tissue (%)",i,rTum);	
-setResult("Cytoplasm area in tumour (%)",i,r1);
+setResult("Non-ROI area (um2)",i,Antm);
+setResult("ROI area (um2)",i,Atm);
+setResult("ROI area in tissue (%)",i,rROI);
+setResult("Cytoplasm area in ROI (%)",i,r1);
 setResult("Iavg cytoplasm",i,IavgCyto);
 setResult("0 %",i,B0);
 setResult("1+ %",i,B1);

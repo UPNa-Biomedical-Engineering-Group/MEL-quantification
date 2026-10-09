@@ -175,7 +175,7 @@ close();
 selectWindow("brownMask");
 close();
 
-// Keep seeds only in tumor:
+// Keep seeds only in ROI:
 
 selectWindow("seeds");
 roiManager("Select", 0);
@@ -190,19 +190,19 @@ run("Duplicate...", "title=cellEdges");
 run("8-bit");
 run("Invert");
 
-// Create tumor mask:
+// Create ROI mask:
 
 selectWindow("brown");
 roiManager("Select", 0);
 run("Create Mask");
-rename("tumorMask");
+rename("ROIMask");
 
 selectWindow("brown");
 run("Select None");
 
 
 // MARKER-CONTROLLED WATERSHED
-run("Marker-controlled Watershed", "input=cellEdges marker=seeds mask=tumorMask binary calculate use");
+run("Marker-controlled Watershed", "input=cellEdges marker=seeds mask=ROIMask binary calculate use");
 
 selectWindow("cellEdges-watershed");
 run("8-bit");
@@ -260,10 +260,10 @@ if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
 }
 i=nResults;
 setResult("Label", i, MyTitle); 	
-setResult("Non-tumour area (um2)",i,Antm);	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Tumour area in tissue (%)",i,rTum);	
-setResult("Membrane area in tumour (%)",i,r1);
+setResult("Non-ROI area (um2)",i,Antm);
+setResult("ROI area (um2)",i,Atm);
+setResult("ROI area in tissue (%)",i,rROI);
+setResult("Membrane area in ROI (%)",i,r1);
 setResult("Iavg membrane",i,IavgMemb);
 setResult("0 %",i,B0);
 setResult("1+ %",i,B1);

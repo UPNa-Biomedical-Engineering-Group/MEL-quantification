@@ -3,7 +3,7 @@
 //In this macro it is preprocessed a directory of imaged using pre-computed segmentation
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var r=0.502, labT=1, thBlue=100, minCellSize=30, maxCellSize=15000;
+var r=0.502, roiLabel=1, thBlue=100, minCellSize=30, maxCellSize=15000;
 
 macro "QKI Action Tool 1 - Ca3fT0b09QT7b09KTdb09ITfb09c"{
 
@@ -16,7 +16,7 @@ macro "QKI Action Tool 1 - Ca3fT0b09QT7b09KTdb09ITfb09c"{
 
 	Dialog.create("Parameters for the analysis");
 	Dialog.addNumber("Ratio micra/pixel", r);
-	Dialog.addNumber("Tumor label", labT);     
+	Dialog.addNumber("ROI label", roiLabel);
 	Dialog.addNumber("Nuclei threshold", thBlue);
 	Dialog.addNumber("Min nuclei size", minCellSize);
 	Dialog.addNumber("Max nuclei size", maxCellSize);
@@ -24,7 +24,7 @@ macro "QKI Action Tool 1 - Ca3fT0b09QT7b09KTdb09ITfb09c"{
 	Dialog.show();
 	
 	r= Dialog.getNumber();
-	labT= Dialog.getNumber();
+	roiLabel= Dialog.getNumber();
 	thBlue= Dialog.getNumber();
 	minCellSize= Dialog.getNumber();
 	maxCellSize= Dialog.getNumber();
@@ -86,20 +86,20 @@ run("8-bit");
 run("Conversions...", "scale");
 run("Subtract...", "value=1");
 
-// Create tumour area:
+// Create ROI area:
 selectWindow("label");
-run("Select Label(s)", "label(s)="+labT);
-setThreshold(labT, 255);
+run("Select Label(s)", "label(s)="+roiLabel);
+setThreshold(roiLabel, 255);
 run("Convert to Mask");
 setThreshold(129, 255);
 run("Convert to Mask");
 run("Create Selection");
-roiManager("Add");	// ROI0 --> Tumour area
+roiManager("Add");	// ROI0 --> ROI area
 close();
 selectWindow("label");
 close();
 
-// MEASURE AREA OF TUMOUR--
+// MEASURE AREA OF ROI--
 run("Set Measurements...", "area redirect=None decimal=2");
 selectWindow(MyTitle);
 run("Select All");
@@ -145,11 +145,11 @@ run("Select All");
 run("Analyze Particles...", "size="+minCellSize+"-"+maxCellSize+" pixel show=Masks in_situ");
 run("Dilate");	// dilate nuclei to avoid counting as cytoplasm the border of the nucleus
 run("Create Selection");
-run("Add to Manager");	// ROI1 --> Cell nuclei in tumor area
+run("Add to Manager");	// ROI1 --> Cell nuclei in ROI area
 close();
 
 
-// OBTAIN CYTOPLASM AREA IN TUMOUR REGION
+// OBTAIN CYTOPLASM AREA IN ROI REGION
 
 roiManager("deselect");
 roiManager("Select", newArray(0,1));
@@ -162,7 +162,7 @@ roiManager("Add");
 roiManager("deselect");
 roiManager("Select", newArray(1,2));
 roiManager("Delete");
-roiManager("deselect");	// ROI1 --> Cytoplasm area in tumour
+roiManager("deselect");	// ROI1 --> Cytoplasm area in ROI
 
 
 
@@ -196,8 +196,8 @@ if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
 }
 i=nResults;
 setResult("Label", i, MyTitle); 	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Cytoplasm area in tumour (%)",i,r1);
+setResult("ROI area (um2)",i,Atm);
+setResult("Cytoplasm area in ROI (%)",i,r1);
 setResult("Iavg cytoplasm",i,IavgCyto);
 
 saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
@@ -231,8 +231,8 @@ macro "QKI Action Tool 1 Options" {
      Dialog.create("TMA Parameters");
      
      Dialog.addNumber("Ratio micra/pixel", r);
-     Dialog.addNumber("Non-tumor label", labNT);
-     Dialog.addNumber("Tumor label", labT);     
+     Dialog.addNumber("Non-ROI label", labNT);
+     Dialog.addNumber("ROI label", roiLabel);
      Dialog.addNumber("Nuclei threshold", thBlue);
      Dialog.addNumber("Min nuclei size", minCellSize);
      Dialog.addNumber("Max nuclei size", maxCellSize);
@@ -242,7 +242,7 @@ macro "QKI Action Tool 1 Options" {
      Dialog.show();
      r= Dialog.getNumber();
      labNT= Dialog.getNumber();
-     labT= Dialog.getNumber();
+     roiLabel= Dialog.getNumber();
      thBlue= Dialog.getNumber();
      minCellSize= Dialog.getNumber();
      maxCellSize= Dialog.getNumber();

@@ -3,7 +3,7 @@
 //In this macro it is only one image is processed using a pre-computed segmentation
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var r=0.502, labT=1, thBlue=140, prominence=5, thBrown=130, minMembSize=50;
+var r=0.502, roiLabel=1, thBlue=140, prominence=5, thBrown=130, minMembSize=50;
 
 macro "GLUT Action Tool 1 - Ca3fT0b09GT6b09LTab09UTfb09T"{
 
@@ -15,7 +15,7 @@ macro "GLUT Action Tool 1 - Ca3fT0b09GT6b09LTab09UTfb09T"{
 	Dialog.create("Parameters for the analysis");
     
 	Dialog.addNumber("Ratio micra/pixel", r);
-	Dialog.addNumber("Tumor label", labT);     
+	Dialog.addNumber("ROI label", roiLabel);
 	Dialog.addNumber("Nuclei threshold", thBlue);
 	Dialog.addNumber("Prominence for nuclei detection", prominence);
 	Dialog.addNumber("GLUT threshold", thBrown);
@@ -23,7 +23,7 @@ macro "GLUT Action Tool 1 - Ca3fT0b09GT6b09LTab09UTfb09T"{
 	Dialog.show();
 	
 	r= Dialog.getNumber();
-	labT= Dialog.getNumber();
+	roiLabel= Dialog.getNumber();
 	thBlue= Dialog.getNumber();
 	prominence= Dialog.getNumber();	
 	thBrown= Dialog.getNumber();	
@@ -55,20 +55,20 @@ run("8-bit");
 run("Conversions...", "scale");
 run("Subtract...", "value=1");
 
-// Create tumour area:
+// Create ROI area:
 selectWindow("label");
-run("Select Label(s)", "label(s)="+labT);
-setThreshold(labT, 255);
+run("Select Label(s)", "label(s)="+roiLabel);
+setThreshold(roiLabel, 255);
 run("Convert to Mask");
 setThreshold(129, 255);
 run("Convert to Mask");
 run("Create Selection");
-roiManager("Add");	// ROI0 --> Tumour area
+roiManager("Add");	// ROI0 --> ROI area
 close();
 selectWindow("label");
 close();
 
-// MEASURE AREA OF TUMOUR--
+// MEASURE AREA OF ROI--
 run("Set Measurements...", "area redirect=None decimal=2");
 selectWindow(MyTitle);
 run("Select All");
@@ -167,7 +167,7 @@ close();
 selectWindow("brownMask");
 close();
 
-// Keep seeds only in tumor:
+// Keep seeds only in ROI:
 
 selectWindow("seeds");
 roiManager("Select", 0);
@@ -182,19 +182,19 @@ run("Duplicate...", "title=cellEdges");
 run("8-bit");
 run("Invert");
 
-// Create tumor mask:
+// Create ROI mask:
 
 selectWindow("brown");
 roiManager("Select", 0);
 run("Create Mask");
-rename("tumorMask");
+rename("ROIMask");
 
 selectWindow("brown");
 run("Select None");
 
 
 // MARKER-CONTROLLED WATERSHED
-run("Marker-controlled Watershed", "input=cellEdges marker=seeds mask=tumorMask binary calculate use");
+run("Marker-controlled Watershed", "input=cellEdges marker=seeds mask=ROIMask binary calculate use");
 
 selectWindow("cellEdges-watershed");
 run("8-bit");
@@ -210,7 +210,7 @@ run("Analyze Particles...", "size="+minMembSize+"-Infinity pixel show=Masks in_s
 run("Create Selection");
 roiManager("Add");
 roiManager("Select", 1);
-roiManager("Delete");	// ROI1 --> Cell membrane in tumor area
+roiManager("Delete");	// ROI1 --> Cell membrane in ROI area
 
 
 // MEASURE DAB STAINING--
@@ -256,10 +256,10 @@ i=nResults;
 
 print(i);
 setResult("Label", i, MyTitle); 	
-setResult("Non-tumour area (um2)",i,Antm);	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Tumour area in tissue (%)",i,rTum);	
-setResult("Membrane area in tumour (%)",i,r1);
+setResult("Non-ROI area (um2)",i,Antm);
+setResult("ROI area (um2)",i,Atm);
+setResult("ROI area in tissue (%)",i,rROI);
+setResult("Membrane area in ROI (%)",i,r1);
 setResult("Iavg membrane",i,IavgMemb);
 
 saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	

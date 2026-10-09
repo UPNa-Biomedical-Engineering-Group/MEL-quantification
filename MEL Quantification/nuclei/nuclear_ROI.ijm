@@ -117,7 +117,7 @@ roiManager("add"); // --> ROI2 tissue in ROI
 //close();
 /*
 
-// Measure non-tumour area:
+// Measure non-ROI area:
 run("Set Measurements...", "area redirect=None decimal=2");
 selectWindow(MyTitle);
 //run("Select All");
@@ -132,10 +132,10 @@ roiManager("delete");
 roiManager("Select",1);
 roiManager("delete");
 
-// Create tumour area:
+// Create ROI area:
 selectWindow("label");
-run("Select Label(s)", "label(s)="+labT);
-setThreshold(labT, 255);
+run("Select Label(s)", "label(s)="+roiLabel);
+setThreshold(roiLabel, 255);
 run("Convert to Mask");
 setThreshold(129, 255);
 run("Convert to Mask");
@@ -145,7 +145,7 @@ roiManager("add");
 //Intersection phase 
 roiManager("Select",newArray(0,1));
 roiManager("and");
-roiManager("add"); // --> ROI2 TUMOUR AREA
+roiManager("add"); // --> ROI2 ROI AREA
 
 //close();
 //selectWindow("label");
@@ -155,7 +155,7 @@ roiManager("add"); // --> ROI2 TUMOUR AREA
 
 // TOTAL TISSUE AREA:
 //Atissuem = Antm+Atm;
-//rTum = Atm/Atissuem*100;	// tumour area in %
+//rROI = Atm/Atissuem*100;	// ROI area in %
 
 
 // SEPARATE STAINING CHANNELS--
@@ -238,10 +238,10 @@ if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
 }
 i=nResults;
 setResult("Label", i, MyTitle); 	
-setResult("Non-tumour area (um2)",i,Antm);	
-setResult("Tumour area (um2)",i,Atm);	
-setResult("Tumour area in tissue (%)",i,rTum);	
-setResult("Nuclei area in tumour (%)",i,r1);
+setResult("Non-ROI area (um2)",i,Antm);
+setResult("ROI area (um2)",i,Atm);
+setResult("ROI area in tissue (%)",i,rROI);
+setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
 saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
 
