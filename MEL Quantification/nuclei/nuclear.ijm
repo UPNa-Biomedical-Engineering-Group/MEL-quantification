@@ -83,20 +83,12 @@ marker = substring(output, lengthOf(par)+1, lengthOf(output)-1);
 
 // Open automatic segmentation
 open(segDir+File.separator+MyTitle);
-rename("label");
-run("Conversions...", " ");
 
 // Create ROI area:
-selectWindow("label");
-run("Select Label(s)", "label(s)="+roiLabel);
-setThreshold(roiLabel, 255);
-run("Convert to Mask");
-setThreshold(129, 255);
+setThreshold(roiLabel, roiLabel);
 run("Convert to Mask");
 run("Create Selection");
 roiManager("Add");	// ROI==0 --> ROI area
-close();
-selectWindow("label");
 close();
 
 // MEASURE AREA OF ROI--
@@ -171,10 +163,10 @@ close();
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xls");
+	open(OutDir+File.separator+"QuantificationResults.xlsx");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -182,7 +174,7 @@ setResult("Label", i, MyTitle);
 setResult("ROI area (um2)",i,Atm);
 setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
 
 //selectWindow(MyTitle);
 //close();

@@ -69,8 +69,6 @@ marker = substring(output, lengthOf(par)+1, lengthOf(output)-1);
 
 // Open automatic segmentation
 run("Duplicate...");
-rename("label");
-run("Conversions...", " ");
 run("8-bit");
 run("Conversions...", "scale");
 
@@ -93,15 +91,27 @@ roiManager("Show None");
 run("Select All");
 showStatus("Deconvolving channels...");
 run("Colour Deconvolution", "vectors=[H&E DAB] hide");
-selectWindow(MyTitle+"-(Colour_2)");
-close();
-selectWindow(MyTitle+"-(Colour_1)");
-rename("blue");
-selectWindow(MyTitle+"-(Colour_3)");
-rename("brown");
+titles = getList("image.titles");
+blueTitle = "";
+brownTitle = "";
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_2")>=0 || indexOf(titles[i], "Colour 2")>=0 || indexOf(titles[i], "Colour2")>=0) {
+		selectWindow(titles[i]);
+		close();
+	}
+}
+titles = getList("image.titles");
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_1")>=0 || indexOf(titles[i], "Colour 1")>=0 || indexOf(titles[i], "Colour1")>=0)
+		blueTitle = titles[i];
+	if (indexOf(titles[i], "Colour_3")>=0 || indexOf(titles[i], "Colour 3")>=0 || indexOf(titles[i], "Colour3")>=0)
+		brownTitle = titles[i];
+}
+if (blueTitle=="" || brownTitle=="")
+	exit("Colour Deconvolution did not create the expected channels. Available windows: "+getList("image.titles"));
 
 // SEGMENT BLUE CELLS
-selectWindow("blue");
+selectWindow(blueTitle);
 run("Threshold...");
 setAutoThreshold("Default");
 setAutoThreshold("Huang");
@@ -146,7 +156,7 @@ roiManager("deselect");	// ROI1 --> Cytoplasm area in the whole tissue
 // MEASURE DAB STAINING--
 
 run("Clear Results");
-selectWindow("brown");
+selectWindow(brownTitle);
 run("Select All");
 setBatchMode(true);
 run("Invert");
@@ -174,10 +184,10 @@ run("Close All");
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xls");
+	open(OutDir+File.separator+"QuantificationResults.xlsx");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -192,7 +202,7 @@ setResult("1+ %",i,B1);
 setResult("2+ %",i,B2);
 setResult("3+ %",i,B3);	
 setResult("H-score",i,H);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
 close();
 }
 /*
@@ -270,5 +280,4 @@ macro "QKI Action Tool 1 Options" {
      maxCellSize= Dialog.getNumber();
              
 }
-
 

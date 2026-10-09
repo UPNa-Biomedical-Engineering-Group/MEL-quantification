@@ -283,10 +283,10 @@ showMessage("Done!S");
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xls");
+	open(OutDir+File.separator+"QuantificationResults.xlsx");
 	IJ.renameResults("Results");
 	
 }
@@ -300,7 +300,7 @@ setResult("ROI area in tissue (%)",i,rROI);
 setResult("Membrane area in ROI (%)",i,r1);
 setResult("Iavg membrane",i,IavgMemb);
 
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
 
 // Draw
 

@@ -119,15 +119,27 @@ roiManager("Show None");
 run("Select All");
 showStatus("Deconvolving channels...");
 run("Colour Deconvolution", "vectors=[H&E DAB] hide");
-selectWindow(MyTitle+"-(Colour_2)");
-close();
-selectWindow(MyTitle+"-(Colour_1)");
-rename("blue");
-selectWindow(MyTitle+"-(Colour_3)");
-rename("brown");
+titles = getList("image.titles");
+blueTitle = "";
+brownTitle = "";
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_2")>=0 || indexOf(titles[i], "Colour 2")>=0 || indexOf(titles[i], "Colour2")>=0) {
+		selectWindow(titles[i]);
+		close();
+	}
+}
+titles = getList("image.titles");
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_1")>=0 || indexOf(titles[i], "Colour 1")>=0 || indexOf(titles[i], "Colour1")>=0)
+		blueTitle = titles[i];
+	if (indexOf(titles[i], "Colour_3")>=0 || indexOf(titles[i], "Colour 3")>=0 || indexOf(titles[i], "Colour3")>=0)
+		brownTitle = titles[i];
+}
+if (blueTitle=="" || brownTitle=="")
+	exit("Colour Deconvolution did not create the expected channels. Available windows: "+getList("image.titles"));
 
 // SEGMENT BLUE CELLS
-selectWindow("blue");
+selectWindow(blueTitle);
 run("Threshold...");
 setAutoThreshold("Default");
 setAutoThreshold("Huang");
@@ -171,7 +183,7 @@ roiManager("deselect");	// ROI3 --> Cytoplasm area in tisse ROI
 // MEASURE DAB STAINING--
 
 run("Clear Results");
-selectWindow("brown");
+selectWindow(brownTitle);
 run("Select All");
 setBatchMode(true);
 run("Invert");
@@ -198,10 +210,10 @@ showMessage("Done!");
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xls");
+	open(OutDir+File.separator+"QuantificationResults.xlsx");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -212,7 +224,7 @@ setResult("ROI area in tissue (%)",i,rROI);
 setResult("Cytoplasm area in ROI (%)",i,r1);
 setResult("Iavg cytoplasm",i,IavgCyto);
 
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
 
 
 // Draw
@@ -263,5 +275,4 @@ macro "QKI Action Tool 1 Options" {
      th3= Dialog.getNumber();
              
 }
-
 

@@ -11,6 +11,10 @@ macro "BRCA Action Tool 1 - Ca3fT0b09BT5b09RTab09CTfb09A"{
 	
 	img=File.openDialog("Select ORIGINAL image");
 	seg = File.openDialog("Select SEGMENTATION image");
+	segDir = File.getParent(seg);
+	OutDir = segDir+File.separator+"Quantification_results";
+	File.makeDirectory(OutDir);
+	resultsPath = OutDir+File.separator+"QuantificationResults.xlsx";
     
     Dialog.create("Parameters for the analysis");
 	Dialog.addNumber("Ratio micra/pixel", r);
@@ -46,20 +50,12 @@ marker = substring(output, lengthOf(par)+1, lengthOf(output)-1);
 
 // Open automatic segmentation
 open(seg);
-rename("label");
-run("Conversions...", " ");
 
 // Create ROI area:
-selectWindow("label");
-run("Select Label(s)", "label(s)="+roiLabel);
-setThreshold(roiLabel, 255);
-run("Convert to Mask");
-setThreshold(129, 255);
+setThreshold(roiLabel, roiLabel);
 run("Convert to Mask");
 run("Create Selection");
 roiManager("Add");	// ROI0 --> ROI area
-close();
-selectWindow("label");
 close();
 
 // MEASURE AREA OF ROI--
@@ -123,8 +119,14 @@ run("Set Measurements...", "area mean standard modal min redirect=None decimal=2
 roiManager("Measure");
 Table.renameColumn("Area", "Area Nuclei");
 Table.renameColumn("Mean", "Mean Intensity Nuclei");
-IavgNucl=getResult("Mean",0);
-Anucl=getResult("Area",0);
+IavgNucl=0;
+Anucl=0;
+if (nResults>0) {
+	IavgNucl=getResult("Mean",0);
+	Anucl=getResult("Area",0);
+	if (isNaN(IavgNucl)) IavgNucl=0;
+	if (isNaN(Anucl)) Anucl=0;
+}
 Anuclm=Anucl*r*r;
 r1=(parseInt(Anuclm)/parseInt(Atm))*100;
 
@@ -134,57 +136,26 @@ rename("orig");
 roiManager("Show None");
 roiManager("Select", 1);
 roiManager("Set Color", "red");
-roiManager("Set Line Width", 0.5);
-showMessage("Done!");
-
-/*
-close(); 
-
-// Write results:
+roiManager("Set Line Width", 1);
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
-{	
-	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xls");
-	IJ.renameResults("Results");
-}
-i=nResults;
+i=0;
 setResult("Label", i, MyTitle); 	
-setResult("Non-ROI area (um2)",i,Antm);
 setResult("ROI area (um2)",i,Atm);
-setResult("ROI area in tissue (%)",i,rROI);
 setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
+saveAs("Results", resultsPath);
+if (!File.exists(resultsPath))
+	exit("The results table could not be saved to: "+resultsPath);
 
-//selectWindow(MyTitle);
-//close();
-
-
-// Draw
-
-selectWindow(MyTitle);
-setBatchMode(false);
-rename("orig");
-roiManager("Show None");
-roiManager("Select", 1);
-roiManager("Set Color", "red");
-roiManager("Set Line Width", 2);
 run("Flatten");
 wait(100);
-
-saveAs("Jpeg", OutDir+File.separator+MyTitle_short+"_analyzed.jpg");
+overlayPath = OutDir+File.separator+MyTitle_short+"_analyzed.jpg";
+saveAs("Jpeg", overlayPath);
 wait(100);
-
-
-
 setTool("zoom");
-selectWindow("orig");
-close();
-close("*");
-*/
+if (IavgNucl==0 && Anucl==0)
+	showMessage("The results file was saved, but no valid nucleus measurement was detected. Try increasing Nuclei threshold or lowering Min nuclei size.\n\nResults saved to:\n"+resultsPath);
+else
+	showMessage("Done!\nResults saved to:\n"+resultsPath+"\n\nOverlay saved to:\n"+overlayPath);
 }
-
-
-

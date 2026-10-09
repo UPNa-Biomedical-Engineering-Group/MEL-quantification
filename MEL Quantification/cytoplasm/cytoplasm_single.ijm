@@ -11,6 +11,10 @@ macro "QKI Action Tool 1 - Ca3fT0b09QT7b09KTdb09ITfb09c"{
 	
 	img=File.openDialog("Select ORIGINAL image");
 	seg = File.openDialog("Select SEGMENTATION image");
+	segDir = File.getParent(seg);
+	OutDir = segDir+File.separator+"Quantification_results_cytoplasmic";
+	File.makeDirectory(OutDir);
+	resultsPath = OutDir+File.separator+"QuantificationResults.xlsx";
 
 	Dialog.create("Parameters for the analysis");
 	Dialog.addNumber("Ratio micra/pixel", r);
@@ -49,20 +53,12 @@ marker = substring(output, lengthOf(par)+1, lengthOf(output)-1);
 
 // Open automatic segmentation
 open(seg);
-rename("label");
-run("Conversions...", " ");
 
 // Create ROI area:
-selectWindow("label");
-run("Select Label(s)", "label(s)="+roiLabel);
-setThreshold(roiLabel, 255);
-run("Convert to Mask");
-setThreshold(129, 255);
+setThreshold(roiLabel, roiLabel);
 run("Convert to Mask");
 run("Create Selection");
 roiManager("Add");	// ROI0 --> ROI area
-close();
-selectWindow("label");
 close();
 
 // MEASURE AREA OF ROI--
@@ -81,22 +77,34 @@ selectWindow(MyTitle);
 roiManager("Show None");
 run("Select All");
 showStatus("Deconvolving channels...");
-run("Colour Deconvolution", "vectors=[H&E DAB] hide");
-selectWindow(MyTitle+"-(Colour_2)");
-close();
-selectWindow(MyTitle+"-(Colour_1)");
-rename("blue");
-selectWindow(MyTitle+"-(Colour_3)");
-rename("brown");
+setBatchMode(false);
+beforeTitles = getList("image.titles");
+run("Colour Deconvolution", "vectors=[H&E DAB]");
+wait(1000);
+titles = getList("image.titles");
+blueTitle = "";
+brownTitle = "";
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_1")>=0 || indexOf(titles[i], "Colour 1")>=0 || indexOf(titles[i], "Colour1")>=0)
+		blueTitle = titles[i];
+	if (indexOf(titles[i], "Colour_3")>=0 || indexOf(titles[i], "Colour 3")>=0 || indexOf(titles[i], "Colour3")>=0)
+		brownTitle = titles[i];
+}
+if (blueTitle=="" || brownTitle=="")
+	exit("Cytoplasm analysis stopped: Colour Deconvolution did not create Colour1 and Colour3. Open the original RGB image and verify that the Colour Deconvolution command works from Fiji's Plugins menu. Windows currently open: "+getList("image.titles"));
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_2")>=0 || indexOf(titles[i], "Colour 2")>=0 || indexOf(titles[i], "Colour2")>=0) {
+		selectWindow(titles[i]);
+		close();
+	}
+}
 
 // SEGMENT BLUE CELLS
-selectWindow("blue");
+selectWindow(blueTitle);
+setBatchMode(false);
 run("Threshold...");
-setAutoThreshold("Default");
-setAutoThreshold("Huang");
-   //thBlue = 180;
 setThreshold(0, thBlue);
-//waitForUser("Adjust threshold for cell segmentation and press OK when ready");
+waitForUser("Adjust the threshold for the purple nuclei in the 'blue' window, then click OK to continue.");
 setOption("BlackBackground", false);
 run("Convert to Mask");
 run("Fill Holes");
@@ -134,7 +142,7 @@ roiManager("deselect");	// ROI1 --> Cytoplasm area in ROI
 // MEASURE DAB STAINING--
 
 run("Clear Results");
-selectWindow("brown");
+selectWindow(brownTitle);
 run("Select All");
 setBatchMode(false);
 run("Invert");
@@ -155,53 +163,27 @@ rename("orig");
 roiManager("Show None");
 roiManager("Select", 1);
 roiManager("Set Color", "red");
-roiManager("Set Line Width", 0.5);
-showMessage("Done!");
-
-/*
-
-// Write results:
+roiManager("Set Line Width", 1);
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xls"))
-{	
-	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xls");
-	IJ.renameResults("Results");
-}
-i=nResults;
+i=0;
 setResult("Label", i, MyTitle); 	
-setResult("Non-ROI area (um2)",i,Antm);
 setResult("ROI area (um2)",i,Atm);
-setResult("ROI area in tissue (%)",i,rROI);
 setResult("Cytoplasm area in ROI (%)",i,r1);
 setResult("Iavg cytoplasm",i,IavgCyto);
 
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
+saveAs("Results", resultsPath);
+if (!File.exists(resultsPath))
+	exit("The results table could not be saved to: "+resultsPath);
 
-
-// Draw
-
-selectWindow(MyTitle);
-setBatchMode(false);
-rename("orig");
-roiManager("Show None");
-roiManager("Select",1);
-roiManager("Set Color", "red");
-roiManager("Set Line Width", 1);
 run("Flatten");
 wait(100);
 
 saveAs("Jpeg", OutDir+File.separator+MyTitle_short+"_analyzed.jpg");
 wait(100);
 
-
 setTool("zoom");
-selectWindow("orig");
-close();
-
-close("*");
-*/
+showMessage("Done!\nResults saved to:\n"+resultsPath+"\n\nOverlay saved to:\n"+OutDir+File.separator+MyTitle_short+"_analyzed.jpg");
 }
 
 macro "QKI Action Tool 1 Options" {
@@ -220,5 +202,3 @@ macro "QKI Action Tool 1 Options" {
      maxCellSize= Dialog.getNumber();
              
 }
-
-

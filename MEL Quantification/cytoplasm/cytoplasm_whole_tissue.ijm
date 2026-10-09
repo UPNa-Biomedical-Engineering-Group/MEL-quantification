@@ -70,16 +70,28 @@ roiManager("Show None");
 run("Select All");
 showStatus("Deconvolving channels...");
 run("Colour Deconvolution", "vectors=[H&E DAB] hide");
-selectWindow(MyTitle+"-(Colour_2)");
-close();
-selectWindow(MyTitle+"-(Colour_1)");
-rename("blue");
-selectWindow(MyTitle+"-(Colour_3)");
-rename("brown");
+titles = getList("image.titles");
+blueTitle = "";
+brownTitle = "";
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_2")>=0 || indexOf(titles[i], "Colour 2")>=0 || indexOf(titles[i], "Colour2")>=0) {
+		selectWindow(titles[i]);
+		close();
+	}
+}
+titles = getList("image.titles");
+for (i=0; i<titles.length; i++) {
+	if (indexOf(titles[i], "Colour_1")>=0 || indexOf(titles[i], "Colour 1")>=0 || indexOf(titles[i], "Colour1")>=0)
+		blueTitle = titles[i];
+	if (indexOf(titles[i], "Colour_3")>=0 || indexOf(titles[i], "Colour 3")>=0 || indexOf(titles[i], "Colour3")>=0)
+		brownTitle = titles[i];
+}
+if (blueTitle=="" || brownTitle=="")
+	exit("Colour Deconvolution did not create the expected channels. Available windows: "+getList("image.titles"));
 
 
 // SEGMENT BLUE CELLS
-selectWindow("blue");
+selectWindow(blueTitle);
 run("Threshold...");
 setAutoThreshold("Default");
 setAutoThreshold("Huang");
@@ -123,7 +135,7 @@ roiManager("deselect");	// ROI1 --> Cytoplasm area in whole tissue
 // MEASURE DAB STAINING--
 
 run("Clear Results");
-selectWindow("brown");
+selectWindow(brownTitle);
 run("Select All");
 setBatchMode(true);
 run("Invert");
@@ -158,7 +170,7 @@ setResult("Label", i, MyTitle);
 setResult("ROI area (um2)",i,Atm);
 setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xls");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
 
 //selectWindow(MyTitle);
 //close();
@@ -188,6 +200,5 @@ close("*");
 
 */
 }
-
 
 
