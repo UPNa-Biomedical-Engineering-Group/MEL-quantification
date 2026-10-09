@@ -23,37 +23,6 @@ Within a user-defined tissue or region of interest, the workflow measures:
   </table>
 </div>
 
-## Repository structure
-
-```text
-MEL_quantification/
-|-- README.md
-|-- LICENSE
-|-- docs/
-|   `-- figures/
-|       `-- workflow_overview.png
-`-- MEL Quantification/
-    |-- run_GUI.ijm
-    |-- nuclei/
-    |   |-- nuclear.ijm
-    |   |-- nuclear_single.ijm
-    |   |-- nuclear_ROI.ijm
-    |   |-- nuclear_tissue.ijm
-    |   `-- nuclear_whole_tissue.ijm
-    |-- cytoplasm/
-    |   |-- cytoplasm.ijm
-    |   |-- cytoplasm_single.ijm
-    |   |-- cytoplasm_ROI.ijm
-    |   |-- cytoplasm_tissue.ijm
-    |   `-- cytoplasm_whole_tissue.ijm
-    `-- membrane/
-        |-- membrane.ijm
-        |-- membrane_single.ijm
-        |-- membrane_ROI.ijm
-        |-- membrane_tissue.ijm
-        `-- membrane_whole_tissue.ijm
-```
-
 ## What the method does
 
 For each RGB IHC image, the workflow:
