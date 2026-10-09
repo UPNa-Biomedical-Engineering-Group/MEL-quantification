@@ -2,11 +2,11 @@
 
 ImageJ/Fiji macros for quantifying marker expression level (MEL) in haematoxylin-DAB immunohistochemistry (IHC) images.
 
-Within a user-defined tissue or tumour region, the workflow measures:
+Within a user-defined tissue or region of interest, the workflow measures:
 
 - the area occupied by a selected cellular compartment (nuclei, cytoplasm,
   or membrane); and
-- the mean signal in the deconvolved DAB channel within that compartment.
+- the mean signal in the deconvolved DAB channel within that cellular compartment.
 
 <div align="center">
   <table>
@@ -65,7 +65,7 @@ For each RGB IHC image, the workflow:
 3. segments the selected cellular compartment; and
 4. measures compartment area and mean DAB intensity.
 
-The method supports three compartments: nuclei, cytoplasm and membrane.
+The method supports three cellular compartments: nuclei, cytoplasm and membrane.
 
 ## Measurement definition
 
@@ -95,8 +95,8 @@ The launcher presents three choices:
 | Choice | Options | Meaning |
 |---|---|---|
 | Analysis mode | Single image; Batch mode | Process one image or all matching images in a folder |
-| Region to analyse | Whole tissue; ROI from mask; Manual ROI | Define the region used for segmentation and measurement |
-| Structure | Nuclei; Cytoplasm; Membrane | Select the compartment to quantify |
+| Region to analyse | Whole tissue; ROI from mask; Manual ROI | Define the region used for cell segmentation and marker intensity measurement |
+| Cell compartment | Nuclei; Cytoplasm; Membrane | Select the cell compartment to quantify |
 
 Manual ROI is available only in single-image mode. The macro selected by
 the launcher is determined by these choices:
@@ -153,11 +153,11 @@ Required conditions:
 Do not use a deconvolved channel, a binary nuclei mask, or a JPEG quality
 control overlay as the original image.
 
-### External tumour label mask
+### External label mask
 
-An external mask is required only for **ROI from mask**. It must be a label
+An external mask is required only for **ROI from mask** mode. It must be a label
 image in which pixel values represent regions such as background,
-non-tumour tissue and tumour.
+stromal tissue and tumour.
 
 For batch mask analysis, image and mask files must have exactly the same
 filename and extension and must be stored in separate parallel folders:
