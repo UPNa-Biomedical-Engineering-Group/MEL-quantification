@@ -33,8 +33,8 @@ MEL_quantification/
 |-- docs/
 |   `-- figures/
 |       `-- workflow_overview.png
-`-- plugin/
-    |-- run_gui.ijm
+`-- MEL Quantification/
+    |-- MEL Quantification.ijm
     |-- nuclei/
     |   |-- nuclear.ijm
     |   |-- nuclear_single.ijm
@@ -194,9 +194,9 @@ constants.
 
 The three mask-based batch macros have an active file-based export:
 
-- `plugin/nuclei/nuclear.ijm`;
-- `plugin/cytoplasm/cytoplasm.ijm`; and
-- `plugin/membrane/membrane.ijm`.
+- `MEL Quantification/nuclei/nuclear.ijm`;
+- `MEL Quantification/cytoplasm/cytoplasm.ijm`; and
+- `MEL Quantification/membrane/membrane.ijm`.
 
 They append one row per analysed image to
 `QuantificationResults.xls`. Depending on the compartment, the table
@@ -246,15 +246,24 @@ label masks.
 
 ### Installation
 
-The runnable macros are inside the repository's `plugin/` directory.
-Place the contents of that directory together in a Fiji macro directory:
+The runnable macros are inside the repository's `MEL Quantification/`
+directory. Clone or download this repository, then copy that complete
+directory into Fiji's `plugins` directory (do not copy the repository root
+directory):
 
 ```text
-Fiji.app/plugins/MEL_quantification/
-|-- run_gui.ijm
+MEL_quantification/MEL Quantification/  ->  Fiji.app/plugins/MEL Quantification/
+```
+
+The resulting installation must have this layout:
+
+```text
+Fiji.app/plugins/MEL Quantification/
+|-- MEL Quantification.ijm
 |-- nuclei/
 |-- cytoplasm/
 `-- membrane/
 ```
 
-Then restart ImageJ. The plugin appears under the Plugins menu (MEL_quantification).
+Restart Fiji. The launcher appears in the `Plugins` menu as
+**MEL Quantification**. Select it to open the analysis interface.
