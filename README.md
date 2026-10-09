@@ -266,9 +266,5 @@ Fiji.app/plugins/MEL Quantification/
 `-- membrane/
 ```
 
-<<<<<<< HEAD
 Restart Fiji. The launcher appears in the `Plugins` menu as **run_GUI**.
 Select it to open the MEL quantification analysis interface.
-=======
-Then restart ImageJ. The plugin appears under the Plugins menu (MEL_quantification).
->>>>>>> e133354604642cc1e77d642daf04a9e2a67d5cdc
