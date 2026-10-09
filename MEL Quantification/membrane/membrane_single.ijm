@@ -51,9 +51,6 @@ marker = substring(output, lengthOf(par)+1, lengthOf(output)-1);
 open(seg);
 rename("label");
 run("Conversions...", " ");
-run("8-bit");
-run("Conversions...", "scale");
-run("Subtract...", "value=1");
 
 // Create ROI area:
 selectWindow("label");
