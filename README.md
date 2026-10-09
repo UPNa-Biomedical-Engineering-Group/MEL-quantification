@@ -158,6 +158,30 @@ article, TSS is used to segment tissue regions such as background, tumour,
 stroma and immune infiltrate. The same approach can be used to define any
 other region of interest.
 
+The three images below show the main stages of this workflow:
+
+<div align="center">
+  <table width="100%" style="border-collapse: collapse; width: 100%;">
+    <tr>
+      <td align="center" valign="top" width="33%" style="padding: 8px; vertical-align: top;">
+        <img src="docs/figures/ihc_original_example.png" alt="Original RGB IHC image" style="display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto;">
+        <p><strong>Original IHC image</strong><br>
+        RGB haematoxylin-DAB image used as the reference for the analysis and for final DAB quantification.</p>
+      </td>
+      <td align="center" valign="top" width="33%" style="padding: 8px; vertical-align: top;">
+        <img src="docs/figures/superpixel_label_map.png" alt="Superpixel label map" style="display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto;">
+        <p><strong>Superpixel label map</strong><br>
+        Numeric superpixel image generated before TSS classification. Each colour represents a different superpixel for visualization.</p>
+      </td>
+      <td align="center" valign="top" width="33%" style="padding: 8px; vertical-align: top;">
+        <img src="docs/figures/tss_classification_result.png" alt="TSS classification result" style="display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto;">
+        <p><strong>TSS classification result</strong><br>
+        Tissue regions classified by TSS and used to define the ROI for MEL Quantification.</p>
+      </td>
+    </tr>
+  </table>
+</div>
+
 ### 1. Generate a superpixel label image
 
 Install TSS from its
@@ -174,10 +198,23 @@ representative superpixels for each class, train the classifier, and apply it
 to the image. For a tumour-oriented analysis, useful classes may include
 background, tumour, stroma and immune infiltrate.
 
-Save the resulting classification as a label image with the same dimensions
-as the original image. Select the label corresponding to the ROI that should
-be quantified. For example, selecting the tumour class produces the tumour
-ROI, but the selected class can represent any region of interest.
+Save the resulting classification as a numeric label image with the same
+dimensions as the original image. Select the label corresponding to the ROI
+that should be quantified. For example, selecting the tumour class produces
+the tumour ROI, but the selected class can represent any region of interest.
+
+For a clearer visualization of the labels, use MorphoLibJ:
+
+1. Select the numeric label image.
+2. Run `Plugins > MorphoLibJ > Label Images > Labels To RGB`.
+3. Save the resulting RGB image as a visualization of the superpixels or
+   classified regions.
+
+`Labels To RGB` assigns a distinct colour to each label, but its output is an
+RGB visualization and must not replace the numeric label image. Keep both
+files: use the numeric label image as the **Superpixel image** in TSS and as
+the segmentation image in MEL Quantification. Use the RGB image only for
+displaying the result in figures and quality-control overlays.
 
 ### 2. Quantify the ROI with MEL Quantification
 
