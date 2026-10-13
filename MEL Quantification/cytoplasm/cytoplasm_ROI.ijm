@@ -210,10 +210,10 @@ showMessage("Done!");
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.csv"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xlsx");
+	open(OutDir+File.separator+"QuantificationResults.csv");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -224,7 +224,7 @@ setResult("ROI area in tissue (%)",i,rROI);
 setResult("Cytoplasm area in ROI (%)",i,r1);
 setResult("Iavg cytoplasm",i,IavgCyto);
 
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.csv");
 
 
 // Draw
@@ -275,4 +275,3 @@ macro "QKI Action Tool 1 Options" {
      th3= Dialog.getNumber();
              
 }
-

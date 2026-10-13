@@ -199,15 +199,14 @@ close();
 run("Clear Results");
 selectWindow("brown");
 setBatchMode(true);
-run("Invert");
 roiManager("Select", 3);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
 Table.renameColumn("Area", "Area Nuclei");
 Table.renameColumn("Mean", "Mean Intensity Nuclei");
-IavgNucl=getResult("Mean",0);
+IavgNucl=getResult("Mean Intensity Nuclei",0);
 print(IavgNucl);
-Anucl=getResult("Area",0);
+Anucl=getResult("Area Nuclei",0);
 Anuclm=Anucl*r*r;
 
 selectWindow(MyTitle);
@@ -227,10 +226,10 @@ showMessage("Done!");
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.csv"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xlsx");
+	open(OutDir+File.separator+"QuantificationResults.csv");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -240,7 +239,7 @@ setResult("ROI area (um2)",i,Atm);
 setResult("ROI area in tissue (%)",i,rROI);
 setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.csv");
 
 //selectWindow(MyTitle);
 //close();
@@ -270,8 +269,5 @@ close("*");
 
 */
 }
-
-
-
 
 

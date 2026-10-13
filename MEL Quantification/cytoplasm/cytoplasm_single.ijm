@@ -14,7 +14,7 @@ macro "QKI Action Tool 1 - Ca3fT0b09QT7b09KTdb09ITfb09c"{
 	segDir = File.getParent(seg);
 	OutDir = segDir+File.separator+"Quantification_results_cytoplasmic";
 	File.makeDirectory(OutDir);
-	resultsPath = OutDir+File.separator+"QuantificationResults.xlsx";
+	resultsPath = OutDir+File.separator+"QuantificationResults.csv";
 
 	Dialog.create("Parameters for the analysis");
 	Dialog.addNumber("Ratio micra/pixel", r);

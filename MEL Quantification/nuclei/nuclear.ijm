@@ -146,7 +146,6 @@ close();
 run("Clear Results");
 selectWindow("brown");
 setBatchMode(true);
-run("Invert");
 roiManager("Select", 1);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
@@ -163,10 +162,10 @@ close();
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.csv"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xlsx");
+	open(OutDir+File.separator+"QuantificationResults.csv");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -174,7 +173,7 @@ setResult("Label", i, MyTitle);
 setResult("ROI area (um2)",i,Atm);
 setResult("Nuclei area in ROI (%)",i,r1);
 setResult("Iavg nuclei",i,IavgNucl);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.csv");
 
 //selectWindow(MyTitle);
 //close();
@@ -203,6 +202,3 @@ close();
 close("*");
 
 }
-
-
-

@@ -126,14 +126,13 @@ close();
 run("Clear Results");
 selectWindow("brown");
 setBatchMode(true);
-run("Invert");
 roiManager("Select", 1);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
 Table.renameColumn("Area", "Area Nuclei");
 Table.renameColumn("Mean", "Mean Intensity Nuclei");
-IavgNucl=getResult("Mean",0);
-Anucl=getResult("Area",0);
+IavgNucl=getResult("Mean Intensity Nuclei",0);
+Anucl=getResult("Area Nuclei",0);
 //Anuclm=Anucl*r*r;
 //r1=(parseInt(Anuclm)/parseInt(Atm))*100;
 
@@ -153,10 +152,10 @@ run("Close All");
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.csv"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xlsx");
+	open(OutDir+File.separator+"QuantificationResults.csv");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -171,7 +170,7 @@ setResult("1+ %",i,B1);
 setResult("2+ %",i,B2);
 setResult("3+ %",i,B3);	
 setResult("H-score",i,H);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.csv");
 
 
 // Draw
@@ -248,6 +247,3 @@ macro "BRCA Action Tool 1 Options" {
      maxCellSize= Dialog.getNumber();
              
 }
-
-
-

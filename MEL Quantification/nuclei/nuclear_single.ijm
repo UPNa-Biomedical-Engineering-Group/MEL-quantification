@@ -14,7 +14,7 @@ macro "BRCA Action Tool 1 - Ca3fT0b09BT5b09RTab09CTfb09A"{
 	segDir = File.getParent(seg);
 	OutDir = segDir+File.separator+"Quantification_results";
 	File.makeDirectory(OutDir);
-	resultsPath = OutDir+File.separator+"QuantificationResults.xlsx";
+	resultsPath = OutDir+File.separator+"QuantificationResults.csv";
     
     Dialog.create("Parameters for the analysis");
 	Dialog.addNumber("Ratio micra/pixel", r);
@@ -113,7 +113,6 @@ close();
 run("Clear Results");
 selectWindow("brown");
 setBatchMode(false);
-run("Invert");
 roiManager("Select", 1);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
@@ -122,8 +121,8 @@ Table.renameColumn("Mean", "Mean Intensity Nuclei");
 IavgNucl=0;
 Anucl=0;
 if (nResults>0) {
-	IavgNucl=getResult("Mean",0);
-	Anucl=getResult("Area",0);
+	IavgNucl=getResult("Mean Intensity Nuclei",0);
+	Anucl=getResult("Area Nuclei",0);
 	if (isNaN(IavgNucl)) IavgNucl=0;
 	if (isNaN(Anucl)) Anucl=0;
 }

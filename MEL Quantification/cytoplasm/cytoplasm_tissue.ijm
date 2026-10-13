@@ -184,10 +184,10 @@ run("Close All");
 // Write results:
 
 run("Clear Results");
-if(File.exists(OutDir+File.separator+"QuantificationResults.xlsx"))
+if(File.exists(OutDir+File.separator+"QuantificationResults.csv"))
 {	
 	//if exists add and modify
-	open(OutDir+File.separator+"QuantificationResults.xlsx");
+	open(OutDir+File.separator+"QuantificationResults.csv");
 	IJ.renameResults("Results");
 }
 i=nResults;
@@ -202,7 +202,7 @@ setResult("1+ %",i,B1);
 setResult("2+ %",i,B2);
 setResult("3+ %",i,B3);	
 setResult("H-score",i,H);	
-saveAs("Results", OutDir+File.separator+"QuantificationResults.xlsx");	
+saveAs("Results", OutDir+File.separator+"QuantificationResults.csv");
 close();
 }
 /*
@@ -280,4 +280,3 @@ macro "QKI Action Tool 1 Options" {
      maxCellSize= Dialog.getNumber();
              
 }
-

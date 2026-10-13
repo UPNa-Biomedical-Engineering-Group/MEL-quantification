@@ -92,7 +92,7 @@ The macro thresholds the deconvolved haematoxylin channel, fills holes,
 applies a median filter, and uses watershed to separate touching objects.
 `Analyze Particles` then excludes objects outside the configured minimum
 and maximum areas. The resulting nuclear ROI is used to measure nuclear
-area and DAB intensity.
+area and the mean intensity of the deconvolved DAB channel.
 
 ### Cytoplasm
 
@@ -100,12 +100,6 @@ The macro detects nuclei using the nuclear workflow and dilates the
 nuclear ROI. Boolean operations between the selected tissue/ROI region
 and the dilated nuclei produce the cytoplasmic ROI. Cytoplasm area and
 mean DAB intensity are then measured in that ROI.
-
-###Ratio micra/pixel: 0.502
-ROI label: valor de la clase que quieres analizar
-Nuclei threshold: 190
-Min nuclei size: 30
-Max nuclei size: 15000 Membrane
 
 The macro generates seeds from local maxima in the haematoxylin channel
 and from maxima in strongly DAB-positive regions. It applies a
@@ -270,6 +264,32 @@ MEL Quantification then measures the selected cellular compartment and the
 mean deconvolved DAB signal within the selected ROI. The ROI does not have to
 be tumour tissue; tumour segmentation is simply a common use case.
 
+### 4. Example results 📈
+
+The following table shows the nuclear quantification results obtained for the
+example image:
+
+<div align="center">
+  <table style="border-collapse: collapse; min-width: 620px; max-width: 100%; text-align: center;">
+    <thead>
+      <tr style="background-color: #2f6f9f; color: white;">
+        <th style="padding: 10px 14px; border: 1px solid #d0d7de;">Image</th>
+        <th style="padding: 10px 14px; border: 1px solid #d0d7de;">ROI area (um<sup>2</sup>)</th>
+        <th style="padding: 10px 14px; border: 1px solid #d0d7de;">Nuclei area in ROI (%)</th>
+        <th style="padding: 10px 14px; border: 1px solid #d0d7de;">Mean nuclear DAB intensity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 10px 14px; border: 1px solid #d0d7de;"><code>087b.tif</code></td>
+        <td style="padding: 10px 14px; border: 1px solid #d0d7de;">710268.23</td>
+        <td style="padding: 10px 14px; border: 1px solid #d0d7de;">40.75</td>
+        <td style="padding: 10px 14px; border: 1px solid #d0d7de;">77.29</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 ## ⚙️ Parameters
 
 The following are the parameters exposed by the current macros. Defaults
@@ -290,14 +310,15 @@ constants.
 
 ## 📤 Outputs
 
-The three mask-based batch macros have an active file-based export:
+The macros export their results as a CSV file that can be opened directly
+in Excel:
 
 - `MEL Quantification/nuclei/nuclear.ijm`;
 - `MEL Quantification/cytoplasm/cytoplasm.ijm`; and
 - `MEL Quantification/membrane/membrane.ijm`.
 
 They append one row per analysed image to
-`QuantificationResults.xls`. Depending on the compartment, the table
+`QuantificationResults.csv`. Depending on the compartment, the table
 contains:
 
 - `Label`: original image filename;
@@ -311,7 +332,7 @@ The output folders are created inside the selected mask directory:
 
 ```text
 Quantification_results/
-|-- QuantificationResults.xls
+|-- QuantificationResults.csv
 `-- case_001_analyzed.jpg
 ```
 
@@ -319,7 +340,7 @@ For cytoplasm:
 
 ```text
 Quantification_results_cytoplasmic/
-|-- QuantificationResults.xls
+|-- QuantificationResults.csv
 `-- case_001_analyzed.jpg
 ```
 
