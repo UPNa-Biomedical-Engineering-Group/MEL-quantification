@@ -127,7 +127,7 @@ if (nResults>0) {
 	if (isNaN(Anucl)) Anucl=0;
 }
 Anuclm=Anucl*r*r;
-r1=(parseInt(Anuclm)/parseInt(Atm))*100;
+r1=(Anuclm/Atm)*100;
 
 selectWindow(MyTitle);
 setBatchMode(false);

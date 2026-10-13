@@ -54,6 +54,8 @@ roiManager("Reset");
 run("Clear Results");
 MyTitle=getTitle();
 output=getInfo("image.directory");
+OutDir=output+File.separator+"Quantification_results";
+File.makeDirectory(OutDir);
 
 aa = split(MyTitle,".");
 MyTitle_short = aa[0];
@@ -81,6 +83,12 @@ run("Convert to Mask");
 run("Create Selection");
 run("Add to Manager");
 roiManager("Select", 0); //ROI 0: Whole tissue
+run("Set Measurements...", "area redirect=None decimal=2");
+selectWindow(MyTitle);
+roiManager("Measure");
+At=getResult("Area", nResults-1);
+Atm=At*r*r;
+run("Clear Results");
 
 // SEPARATE STAINING CHANNELS--
 
@@ -133,8 +141,8 @@ Table.renameColumn("Area", "Area Nuclei");
 Table.renameColumn("Mean", "Mean Intensity Nuclei");
 IavgNucl=getResult("Mean Intensity Nuclei",0);
 Anucl=getResult("Area Nuclei",0);
-//Anuclm=Anucl*r*r;
-//r1=(parseInt(Anuclm)/parseInt(Atm))*100;
+Anuclm=Anucl*r*r;
+r1=(Anuclm/Atm)*100;
 
 selectWindow(MyTitle);
 setBatchMode(false);
@@ -143,8 +151,6 @@ roiManager("Show None");
 roiManager("Select", 1);
 roiManager("Set Color", "red");
 roiManager("Set Line Width", 0.5);
-
-waitForUser("Press OK to continue to the next image");
 
 run("Close All");
 

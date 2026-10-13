@@ -55,6 +55,8 @@ roiManager("Reset");
 run("Clear Results");
 MyTitle=getTitle();
 output=getInfo("image.directory");
+OutDir=output+File.separator+"Quantification_results";
+File.makeDirectory(OutDir);
 
 aa = split(MyTitle,".");
 MyTitle_short = aa[0];
@@ -83,6 +85,12 @@ run("Convert to Mask");
 run("Create Selection");
 run("Add to Manager");
 roiManager("Select", 0); //ROI 0: Whole tissue
+run("Set Measurements...", "area redirect=None decimal=2");
+selectWindow(MyTitle);
+roiManager("Measure");
+At=getResult("Area", nResults-1);
+Atm=At*r*r;
+run("Clear Results");
 
 
 // SEPARATE STAINING CHANNELS--
@@ -225,14 +233,15 @@ run("Clear Results");
 selectWindow("brown");
 run("Select All");
 setBatchMode(true);
-run("Invert");
 roiManager("Select", 1);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
 Table.renameColumn("Area", "Area Membrane");
 Table.renameColumn("Mean", "Mean Intensity Membrane");
-IavgMemb=getResult("Mean",0);
-Amemb=getResult("Area",0);
+IavgMemb=getResult("Mean Intensity Membrane",0);
+Amemb=getResult("Area Membrane",0);
+Amembm=Amemb*r*r;
+r1=(Amembm/Atm)*100;
 
 selectWindow(MyTitle);
 setBatchMode(false);
@@ -242,7 +251,22 @@ roiManager("Select", 1);
 roiManager("Set Color", "red");
 roiManager("Set Line Width", 0.5);
 
-waitForUser("Press OK to continue to the next image");
+run("Clear Results");
+if(File.exists(OutDir+File.separator+"QuantificationResults.csv"))
+{
+	open(OutDir+File.separator+"QuantificationResults.csv");
+	IJ.renameResults("Results");
+}
+i=nResults;
+setResult("Label", i, MyTitle);
+setResult("ROI area (um2)", i, Atm);
+setResult("Membrane area in ROI (%)", i, r1);
+setResult("Iavg membrane", i, IavgMemb);
+saveAs("Results", OutDir+File.separator+"QuantificationResults.csv");
+
+run("Flatten");
+wait(100);
+saveAs("Jpeg", OutDir+File.separator+MyTitle_short+"_analyzed.jpg");
 
 run("Close All");
 
@@ -340,4 +364,3 @@ close();
 
 */
 }
-

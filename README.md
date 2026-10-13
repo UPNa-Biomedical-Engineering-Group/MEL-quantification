@@ -310,15 +310,16 @@ constants.
 
 ## 📤 Outputs
 
-The macros export their results as a CSV file that can be opened directly
-in Excel:
+The mask-based and whole-tissue macros export their results as a CSV file
+that can be opened directly in Excel:
 
 - `MEL Quantification/nuclei/nuclear.ijm`;
 - `MEL Quantification/cytoplasm/cytoplasm.ijm`; and
 - `MEL Quantification/membrane/membrane.ijm`.
 
-They append one row per analysed image to
-`QuantificationResults.csv`. Depending on the compartment, the table
+The batch variants append one row per analysed image to
+`QuantificationResults.csv`; the single-image variants write one row for the
+selected image. Depending on the compartment, the table
 contains:
 
 - `Label`: original image filename;

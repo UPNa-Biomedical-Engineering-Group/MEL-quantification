@@ -154,7 +154,7 @@ roiManager("Measure");
 IavgNucl=getResult("Mean",0);
 Anucl=getResult("Area",0);
 Anuclm=Anucl*r*r;
-r1=(parseInt(Anuclm)/parseInt(Atm))*100;
+r1=(Anuclm/Atm)*100;
 
 
 close(); 

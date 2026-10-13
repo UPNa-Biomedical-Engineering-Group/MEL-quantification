@@ -173,7 +173,6 @@ run("Clear Results");
 selectWindow(brownTitle);
 run("Select All");
 setBatchMode(true);
-run("Invert");
 roiManager("Select", 1);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
@@ -182,7 +181,7 @@ Acyto=getResult("Area",0);
 //Table.renameColumn("Area", "Area Cytoplasm");
 //Table.renameColumn("Mean", "Mean Intensity Cytoplasm");
 Acytom=Acyto*r*r;
-r1=(parseInt(Acytom)/parseInt(Atm))*100;
+r1=(Acytom/Atm)*100;
 
 close();
 

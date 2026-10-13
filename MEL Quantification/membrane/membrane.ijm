@@ -253,7 +253,7 @@ roiManager("Measure");
 IavgMemb=getResult("Mean",0);
 Amemb=getResult("Area",0);
 Amembm=Amemb*r*r;
-r1=(parseInt(Amembm)/parseInt(Atm))*100;
+r1=(Amembm/Atm)*100;
 
 close();
 
@@ -300,4 +300,3 @@ close();
 close("*");
 
 }
-

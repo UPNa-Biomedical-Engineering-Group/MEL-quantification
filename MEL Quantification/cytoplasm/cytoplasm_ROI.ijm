@@ -186,14 +186,13 @@ run("Clear Results");
 selectWindow(brownTitle);
 run("Select All");
 setBatchMode(true);
-run("Invert");
 roiManager("Select", 3);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
 Table.renameColumn("Area", "Area Cytoplasm");
 Table.renameColumn("Mean", "Mean Intensity Cytoplasm");
-IavgCyto=getResult("Mean",0);
-Acyto=getResult("Area",0);
+IavgCyto=getResult("Mean Intensity Cytoplasm",0);
+Acyto=getResult("Area Cytoplasm",0);
 Acytom=Acyto*r*r;
 
 selectWindow(MyTitle);

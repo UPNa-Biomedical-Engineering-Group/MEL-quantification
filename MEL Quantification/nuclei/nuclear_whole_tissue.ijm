@@ -30,6 +30,8 @@ macro "BRCA Action Tool 1 - Ca3fT0b09BT5b09RTab09CTfb09A"{
 open(img);
 MyTitle=getTitle();
 output=getInfo("image.directory");
+OutDir=output+File.separator+"Quantification_results";
+File.makeDirectory(OutDir);
 aa = split(MyTitle,".");
 MyTitle_short = aa[0];
 
@@ -61,6 +63,11 @@ run("Convert to Mask");
 run("Create Selection");
 run("Add to Manager");
 roiManager("Select", 0); //ROI 0: Whole tissue
+run("Set Measurements...", "area redirect=None decimal=2");
+roiManager("Measure");
+At=getResult("Area", nResults-1);
+Atm=At*r*r;
+run("Clear Results");
 
 
 // SEPARATE STAINING CHANNELS--
@@ -112,9 +119,10 @@ run("Set Measurements...", "area mean standard modal min redirect=None decimal=2
 roiManager("Measure");
 Table.renameColumn("Area", "Area Nuclei");
 Table.renameColumn("Mean", "Mean Intensity Nuclei");
-IavgNucl=getResult("Mean Intensity",0);
+IavgNucl=getResult("Mean Intensity Nuclei",0);
 Anucl=getResult("Area Nuclei",0);
 Anuclm=Anucl*r*r;
+r1=(Anuclm/Atm)*100;
 
 selectWindow(MyTitle);
 setBatchMode(false);
@@ -123,6 +131,18 @@ roiManager("Show None");
 roiManager("Select", 1);
 roiManager("Set Color", "red");
 roiManager("Set Line Width", 0.5);
+
+run("Clear Results");
+setResult("Label", 0, MyTitle);
+setResult("ROI area (um2)", 0, Atm);
+setResult("Nuclei area in ROI (%)", 0, r1);
+setResult("Iavg nuclei", 0, IavgNucl);
+saveAs("Results", OutDir+File.separator+"QuantificationResults.csv");
+
+run("Flatten");
+wait(100);
+saveAs("Jpeg", OutDir+File.separator+MyTitle_short+"_analyzed.jpg");
+
 showMessage("Done!");
 
 /*

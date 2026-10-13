@@ -208,16 +208,15 @@ run("Clear Results");
 selectWindow("brown");
 run("Select All");
 setBatchMode(false);
-run("Invert");
 roiManager("Select", 1);
 run("Set Measurements...", "area mean standard modal min redirect=None decimal=2");
 roiManager("Measure");
 Table.renameColumn("Area", "Area Membrane");
 Table.renameColumn("Mean", "Mean Intensity Membrane");
-IavgMemb=getResult("Mean",0);
-Amemb=getResult("Area",0);
+IavgMemb=getResult("Mean Intensity Membrane",0);
+Amemb=getResult("Area Membrane",0);
 Amembm=Amemb*r*r;
-r1=(parseInt(Amembm)/parseInt(Atm))*100;
+r1=(Amembm/Atm)*100;
 
 selectWindow(MyTitle);
 setBatchMode(false);
@@ -276,4 +275,3 @@ close();
 close("*");
 */
 }
-
