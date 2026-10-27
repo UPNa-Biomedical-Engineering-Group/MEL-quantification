@@ -393,6 +393,7 @@ Select it to open the MEL quantification analysis interface.
 The methods implemented in this repository are described and validated in the following preprint:
 
 **Development and Validation of an Automated Image-Based Method for Prognostic Stratification in Lung Adenocarcinoma using Immunohistochemical Markers**
+
 Carraro F, Sangüesa M, Irisarri A, Orive D, Sainz C, Arganda-Carreras I, Calvo A, Montuenga LM, Ortiz de Solorzano C, Ariz M. (2026)
 
 DOI: 10.64898/2026.10.22.26366204 
