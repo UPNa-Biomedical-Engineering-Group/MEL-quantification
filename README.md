@@ -387,3 +387,23 @@ Fiji.app/plugins/MEL Quantification/
 
 Restart Fiji. The launcher appears in the `Plugins` menu as **run_GUI**.
 Select it to open the MEL quantification analysis interface.
+
+## 📚 Citation
+
+Carraro F, Sangüesa M, Irisarri A, Orive D, Sainz C, Arganda-Carreras I, Calvo A, Montuenga LM, Ortiz de Solorzano C, Ariz M.
+Development and Validation of an Automated Image-Based Method for Prognostic Stratification in Lung Adenocarcinoma using Immunohistochemical Markers.
+2026.
+DOI: 10.64898/2026.10.22.26366204
+
+@article{Carraro2026MEL,
+  author  = {Carraro, Filippo and Sanguesa, Maria and Irisarri, Amaia and
+             Orive, Daniel and Sainz, Cristina and Arganda-Carreras, Ignacio and
+             Calvo, Alfonso and Montuenga, Luis M. and
+             Ortiz de Solorzano, Carlos and Ariz, Mikel},
+  title   = {Development and Validation of an Automated Image-Based Method
+             for Prognostic Stratification in Lung Adenocarcinoma using
+             Immunohistochemical Markers},
+  year    = {2026},
+  doi     = {10.64898/2026.10.22.26366204},
+  url     = {https://doi.org/10.64898/2026.10.22.26366204}
+}
